@@ -1,0 +1,48 @@
+{
+  "senior_advice": "学长寄语：",
+  "numpy_module": {
+    "title": "1. 内存切片可视化 (4x4 Matrix)",
+    "view_label": "View (Reference)",
+    "view_desc": "Basic Slicing 总是返回视图。修改它会直接改变原矩阵内存！",
+    "fancy_label": "Copy (New Memory)",
+    "fancy_desc": "Fancy Indexing 创建的是副本。这涉及到内存分配，大规模使用时效率较低。",
+    "mask_label": "Copy (New Memory)",
+    "mask_desc": "Boolean Mask 同样会触发内存复制。它是提取特定条件数据的神器。",
+    "instruction": "选择一种切片方式观察 NumPy 的内存行为...",
+    "broadcast_title": "2. 广播机制 (Broadcasting)",
+    "broadcast_advice": "广播不是真的把数据在内存里复制，而是在遍历迭代器时虚拟地映射地址。核心准则：从最后一位往前对，要么相等，要么其中一个是 <1>1</1>。",
+    "fancy_btn": "a[[0, 2]]",
+    "mask_btn": "a[a % 2 == 0]",
+    "slice_btn": "a[1:2, :]"
+  },
+  "backprop_module": {
+    "title": "链式法则追踪器",
+    "output_layer": "Output Layer",
+    "error_val": "误差值",
+    "calculating": "正在推导梯度...",
+    "track_grad": "追踪梯度 Δwjk",
+    "notebook_title": "推导笔记本 (COMP2211 Core)",
+    "step1_title": "Step 1: 链式法则展开",
+    "step2_title": "Step 2: 定义误差项 (Error Signal)",
+    "step2_desc": "令 <1>\\delta_k = - \\frac{\\partial E}{\\partial net_k}</1>。在 MSE 损失下：",
+    "step3_title": "Step 3: 权重更新量",
+    "advice": "记住，反向传播本质上是『寻找罪魁祸首』的过程。每一层权重 <1>w_{jk}</1> 都在问：误差 <3>E</3> 有多少是由我负责的？<5>\\delta_k</5> 就是上一层传回来的『责备信』。"
+  },
+  "kernel_module": {
+    "operation": "Operation:",
+    "input_image": "Input Image",
+    "kernel": "Kernel",
+    "output_feature_map": "Output Feature Map",
+    "advice": "卷积核本质上是一个局部特征过滤器。当你使用 <1>\\text{Laplacian}</1> 算子时，它在做二阶导数近似，能迅速捕捉到像素亮度的『突变点』。"
+  },
+  "app": {
+    "title": "CS/AI 交互式学习实验室",
+    "subtitle": "COMP2211 Machine Learning Notebook",
+    "version": "v2.0 Katex Enhanced",
+    "tabs": {
+      "numpy": "NumPy 机制",
+      "backprop": "反向传播",
+      "kernel": "卷积核实验室"
+    }
+  }
+}

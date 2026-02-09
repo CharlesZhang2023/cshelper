@@ -1,0 +1,45 @@
+{
+  "senior_advice": "Senior's Advice:",
+  "numpy_module": {
+    "title": "1. Memory Slicing Visualization (4x4 Matrix)",
+    "view_label": "View (Reference)",
+    "view_desc": "Basic Slicing always returns a view. Modifying it will change the original matrix memory directly!",
+    "fancy_label": "Copy (New Memory)",
+    "fancy_desc": "Fancy Indexing creates a copy. This involves memory allocation and is less efficient for large scale usage.",
+    "mask_label": "Copy (New Memory)",
+    "mask_desc": "Boolean Mask also triggers memory copy. It is a powerful tool for extracting specific conditional data.",
+    "instruction": "Select a slicing method to observe NumPy's memory behavior...",
+    "broadcast_title": "2. Broadcasting Mechanism",
+    "broadcast_advice": "Broadcasting doesn't actually copy data in memory, but virtually maps addresses during iteration. Core rule: Compare from the last dimension forward, they must either be equal or one of them is <1>1</1>."
+  },
+  "backprop_module": {
+    "title": "Chain Rule Tracker",
+    "output_layer": "Output Layer",
+    "error_val": "Error Value",
+    "calculating": "Deriving Gradient...",
+    "track_grad": "Track Gradient Δwjk",
+    "notebook_title": "Derivation Notebook (COMP2211 Core)",
+    "step1_title": "Step 1: Chain Rule Expansion",
+    "step2_title": "Step 2: Define Error Signal",
+    "step2_desc": "Let <1>\\delta_k = - \\frac{\\partial E}{\\partial net_k}</1>. Under MSE loss:",
+    "step3_title": "Step 3: Weight Update Amount",
+    "advice": "Remember, backpropagation is essentially a process of 'finding the culprit'. Each layer weight <1>w_{jk}</1> is asking: How much of the error <3>E</3> am I responsible for? <5>\\delta_k</5> is the 'blame letter' passed back from the previous layer."
+  },
+  "kernel_module": {
+    "operation": "Operation:",
+    "input_image": "Input Image",
+    "kernel": "Kernel",
+    "output_feature_map": "Output Feature Map",
+    "advice": "A convolution kernel is essentially a local feature filter. When you use the <1>\\text{Laplacian}</1> operator, it is approximating the second derivative and can quickly capture 'sudden changes' in pixel brightness."
+  },
+  "app": {
+    "title": "CS/AI Interactive Learning Lab",
+    "subtitle": "COMP2211 Machine Learning Notebook",
+    "version": "v2.0 Katex Enhanced",
+    "tabs": {
+      "numpy": "NumPy Mechanism",
+      "backprop": "Backpropagation",
+      "kernel": "Kernel Lab"
+    }
+  }
+}
