@@ -1,54 +1,62 @@
-# CS Helper (KnowCS)
+# CS Helper (KnowitCS)
 
-这是一个关于 HKUST COMP2211 (Machine Learning) 的交互式学习网站。该项目旨在通过可视化的方式帮助学生理解机器学习中的核心概念，目前项目正在持续更新中。
+[中文](./README_ZH.md) | **English**
 
-## 🌟 在线体验
+This is an interactive learning website for HKUST COMP2211 (Machine Learning). The project aims to help students understand core concepts in machine learning through visualization. The project is currently being updated continuously.
 
-你可以通过以下链接体验该项目：
+## 🌟 Online Demo
 
-- **中文版**: [https://knowcs.pinit.eth.link/](https://knowcs.pinit.eth.link/)
-- **英文版**: [https://knowitcs.pinit.eth.link/](https://knowitcs.pinit.eth.link/)
+You can experience the project via the following links:
 
-## 📚 内容来源与计划
+- **English Version**: [https://knowitcs.pinit.eth.link/](https://knowitcs.pinit.eth.link/)
+- **Chinese Version**: [https://knowcs.pinit.eth.link/](https://knowcs.pinit.eth.link/)
 
-目前，本项目的内容主要参考并致敬了 [moyunxiang/COMP2211](https://github.com/moyunxiang/COMP2211/blob/main/COMP2211.md) 的学习笔记。
+## 📚 Content Source & Roadmap
 
-**未来计划：**
-- 持续更新更多 COMP2211 相关的可视化模块。
-- 最终目标是将本项目合并回 [moyunxiang/COMP2211](https://github.com/moyunxiang/COMP2211/blob/main/COMP2211.md)，作为其互动补充部分。
+Currently, the content of this project mainly references the study notes from [moyunxiang/COMP2211](https://github.com/moyunxiang/COMP2211/blob/main/COMP2211.md). It will be gradually updated according to Professor Desmond's lectures.
 
-## 🛠️ 技术栈
+**Future Plans:**
 
-本项目基于现代前端技术栈构建，注重性能与交互体验：
+- Continuously update more COMP2211-related visualization modules.
+- The COMP2211 part of this project will be merged into [moyunxiang/COMP2211](https://github.com/moyunxiang/COMP2211/blob/main/COMP2211.md) as its interactive supplement.
+- The COMP2211 part will be open-sourced under the MIT license for students to learn and reference.
 
-- **核心框架**: [React](https://react.dev/) (v19) - 用于构建用户界面。
-- **构建工具**: [Vite](https://vitejs.dev/) - 提供极速的开发服务器和构建体验。
-- **样式方案**: [Tailwind CSS](https://tailwindcss.com/) (v4) - 实用优先的 CSS 框架，快速构建现代 UI。
-- **动画引擎**: [Framer Motion](https://www.framer.com/motion/) - 实现流畅的交互动画效果（如梯度下降追踪、矩阵变换）。
-- **数学公式**: [KaTeX](https://katex.org/) - 高性能的 LaTeX 公式渲染库。
-- **国际化**: [react-i18next](https://react.i18next.com/) - 支持中英文一键切换。
-- **图标库**: [Lucide React](https://lucide.dev/) - 简洁美观的图标组件。
-- **单文件构建**: `vite-plugin-singlefile` - 将整个应用打包为单个 HTML 文件，便于分发和部署。
+## 🛠️ Tech Stack
 
-## 🚀 本地运行
+This project is built on a modern frontend tech stack, focusing on performance and interactive experience:
 
-1. 克隆仓库：
+- **Core Framework**: [React](https://react.dev/) (v19) - Used for building user interfaces.
+- **Build Tool**: [Vite](https://vitejs.dev/) - Provides extremely fast development server and build experience.
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) (v4) - Utility-first CSS framework for rapidly building modern UIs.
+- **Animation Engine**: [Framer Motion](https://www.framer.com/motion/) - Implements smooth interactive animation effects (e.g., gradient descent tracking, matrix transformation).
+- **Math Formulas**: [KaTeX](https://katex.org/) - High-performance LaTeX formula rendering library.
+- **Internationalization**: [react-i18next](https://react.i18next.com/) - Supports one-click switching between Chinese and English.
+- **Icons**: [Lucide React](https://lucide.dev/) - Clean and beautiful icon components.
+- **Single File Build**: `vite-plugin-singlefile` - Packages the entire application into a single HTML file for easy distribution and deployment.
+
+## 🚀 Run Locally
+
+1. Clone the repository:
+
    ```bash
    git clone https://github.com/CharlesZhang2023/cshelper.git
    ```
 
-2. 安装依赖：
+2. Install dependencies:
+
    ```bash
    cd cshelper
    npm install
    ```
 
-3. 启动开发服务器：
+3. Start development server:
+
    ```bash
    npm run dev
    ```
 
-4. 构建项目：
+4. Build project:
+
    ```bash
    npm run build
    ```
