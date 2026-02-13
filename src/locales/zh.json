@@ -61,19 +61,36 @@
     "naive": {
       "input_title": "特征输入",
       "smoothing": "平滑系数 <1>\\alpha</1>:",
-      "log_mode": "LOG-SUM 模式",
-      "product_mode": "乘积模式",
-      "result_title": "分类结果 (Notes P.29)",
-      "likelihood_chain": "似然链 (Likelihood Chain)",
-      "prob_for": "{{cls}} 的概率",
-      "advice": "讲义第 23 页重点：贝叶斯之所以是“朴素”的，是因为它假设特征之间 <1>条件独立</1>。虽然这不符合实际，但在处理垃圾邮件等任务时非常高效。注意 <3>Zero Frequency Problem</3>，一定要调大 <5>\\alpha</5> 来观察变化！"
+      "log_mode": "对数求和模式",
+      "product_mode": "连乘积模式",
+      "result_title": "分类结果 (讲义 P.29)",
+      "likelihood_chain": "似然概率链",
+      "prob_for": "{{cls}} 类别的概率项",
+      "advice": "讲义 P.23 重点：贝叶斯之所以『朴素』，是因为假设特征之间 <1>条件独立</1>。这对垃圾邮件过滤很有效。注意 <3>零频率问题</3>，尝试增大 <5>\\alpha</5> 看看变化！"
     }
   },
+  "knn": {
+      "click_instruction": "点击背景移动测试点",
+      "raw_data": "原始数据",
+      "standardized": "标准化",
+      "test_sample": "测试样本",
+      "model_complexity": "模型复杂度 vs 错误率",
+      "low_k": "低 K 值",
+      "overfitting": "过拟合",
+      "high_k": "高 K 值",
+      "underfitting": "欠拟合",
+      "voting_panel": "分类投票面板",
+      "k_value": "参数 K 值:",
+      "m_vote": "M 码投票",
+      "l_vote": "L 码投票",
+      "advice": "仔细观察交互变化：当你增大 <1>K</1> 值时，决策边界会变得更加平滑。较小的 <1>K</1> 会导致边界复杂且容易 <3>过拟合</3>（捕捉到噪声），而过大的 <5>K</5> 则会过度简化边界导致 **欠拟合**。另外，尝试切换『标准化』模式，看看量纲如何影响距离计算——如果不进行标准化，数值范围大的特征（如体重）将主导距离计算，这是 KNN 中最经典的陷阱！"
+    },
   "app": {
     "title": "CS/AI 交互式学习实验室",
     "subtitle": "COMP2211 Machine Learning Notebook",
     "version": "v2.0 Katex Enhanced",
     "tabs": {
+      "knn": "K-近邻算法",
       "bayesBasics": "贝叶斯基础",
       "naiveBayes": "朴素贝叶斯",
       "numpy": "NumPy 机制",
@@ -88,6 +105,10 @@
       "naiveBayes": {
         "title": "朴素贝叶斯推断",
         "subtitle": "特征条件独立假设下的分类器"
+      },
+      "knn": {
+        "title": "K-近邻算法",
+        "subtitle": "距离度量与决策边界"
       },
       "numpy": {
         "title": "NumPy 内部机制",

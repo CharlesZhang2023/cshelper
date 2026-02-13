@@ -66,11 +66,28 @@
       "advice": "Key point from Notes P.23: Bayes is 'Naive' because it assumes features are <1>conditionally independent</1>. Efficient for spam filtering. Watch out for <3>Zero Frequency Problem</3>, increase <5>\\alpha</5> to see changes!"
     }
   },
+  "knn": {
+      "click_instruction": "Click background to move test point",
+      "raw_data": "Raw Data",
+      "standardized": "Standardized",
+      "test_sample": "Test Sample",
+      "model_complexity": "Model Complexity vs Error Rate",
+      "low_k": "Low K",
+      "overfitting": "Overfitting",
+      "high_k": "High K",
+      "underfitting": "Underfitting",
+      "voting_panel": "Classification Voting Panel",
+      "k_value": "Parameter K:",
+      "m_vote": "M Size Vote",
+      "l_vote": "L Size Vote",
+      "advice": "Observe the interaction: As you increase <1>K</1>, the decision boundary becomes smoother. Small <1>K</1> leads to complex boundaries prone to <3>Overfitting</3> (capturing noise), while large <5>K</5> simplifies the boundary causing **Underfitting**. Also, toggle 'Standardized' to see how scale affects distance—without it, features with larger ranges (like Weight) dominate the distance calculation, which is a classic trap in KNN!"
+    },
   "app": {
     "title": "CS/AI Interactive Learning Lab",
     "subtitle": "COMP2211 Machine Learning Notebook",
     "version": "v2.0 Katex Enhanced",
     "tabs": {
+      "knn": "K-Nearest Neighbors",
       "bayesBasics": "Bayes Basics",
       "naiveBayes": "Naive Bayes",
       "numpy": "NumPy Mechanism",
@@ -85,6 +102,10 @@
       "naiveBayes": {
         "title": "Naive Bayes Inference",
         "subtitle": "Classifier with Feature Conditional Independence"
+      },
+      "knn": {
+        "title": "K-Nearest Neighbors",
+        "subtitle": "Distance Metric & Decision Boundary"
       },
       "numpy": {
         "title": "NumPy Internal Mechanism",
