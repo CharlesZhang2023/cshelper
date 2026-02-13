@@ -32,16 +32,60 @@
     "output_feature_map": "Output Feature Map",
     "advice": "A convolution kernel is essentially a local feature filter. When you use the <1>\\text{Laplacian}</1> operator, it is approximating the second derivative and can quickly capture 'sudden changes' in pixel brightness."
   },
+  "bayes": {
+    "basics": {
+      "title": "1. Bayes Rule Core Analysis",
+      "terms": {
+        "posterior": "Posterior",
+        "posterior_desc": "Update of belief <1>B</1> after evidence <3>E</3>.",
+        "prior": "Prior",
+        "prior_desc": "Probability of belief <1>B</1> before any evidence.",
+        "likelihood": "Likelihood",
+        "likelihood_desc": "Probability of evidence <1>E</1> given belief <3>B</3> is true.",
+        "marginal": "Marginal",
+        "marginal_desc": "Total probability of evidence <1>E</1> under all conditions."
+      }
+    },
+    "fire_case": {
+      "title": "2. Practice: Smoke & Fire Case (Notes P.15)",
+      "p_fire": "Prob <1>P(\\text{Fire})</1>",
+      "p_smoke": "Prob <1>P(\\text{Smoke})</1>",
+      "p_smoke_given_fire": "Prob <1>P(\\text{Smoke}|\\text{Fire})</1>",
+      "advice": "Classic case from notes: Fire is rare (Prior=1%), but smoke is common (Marginal=10%, maybe BBQ). Bayes tells us probability of fire given smoke is only <1>9\\%</1>. <3>Evidence ≠ Conclusion, Prior matters!</3>",
+      "result_title": "Prob of Fire given Smoke",
+      "calc_process": "Calculation:"
+    },
+    "naive": {
+      "input_title": "Feature Input",
+      "smoothing": "Smoothing <1>\\alpha</1>:",
+      "log_mode": "LOG-SUM MODE",
+      "product_mode": "PRODUCT MODE",
+      "result_title": "Classification Result (Notes P.29)",
+      "likelihood_chain": "Likelihood Chain",
+      "prob_for": "Probabilities for {{cls}}",
+      "advice": "Key point from Notes P.23: Bayes is 'Naive' because it assumes features are <1>conditionally independent</1>. Efficient for spam filtering. Watch out for <3>Zero Frequency Problem</3>, increase <5>\\alpha</5> to see changes!"
+    }
+  },
   "app": {
     "title": "CS/AI Interactive Learning Lab",
     "subtitle": "COMP2211 Machine Learning Notebook",
     "version": "v2.0 Katex Enhanced",
     "tabs": {
+      "bayesBasics": "Bayes Basics",
+      "naiveBayes": "Naive Bayes",
       "numpy": "NumPy Mechanism",
       "backprop": "Backpropagation",
       "kernel": "Kernel Lab"
     },
     "section": {
+      "bayesBasics": {
+        "title": "Bayes Theorem Basics",
+        "subtitle": "From Math Definition to Intuitive Update"
+      },
+      "naiveBayes": {
+        "title": "Naive Bayes Inference",
+        "subtitle": "Classifier with Feature Conditional Independence"
+      },
       "numpy": {
         "title": "NumPy Internal Mechanism",
         "subtitle": "Deep Dive into Memory Address Mapping & Broadcasting Logic"

@@ -11,7 +11,11 @@ import {
   RefreshCw,
   Search,
   Activity,
-  Languages
+  Languages,
+  Calculator,
+  BarChart3,
+  Flame,
+  Wind
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import katex from 'katex';
@@ -45,6 +49,17 @@ const KERNEL_PRESETS = {
   'Sobel-Y': [[1, 2, 1], [0, 0, 0], [-1, -2, -1]],
   'Laplacian': [[0, 1, 0], [1, -4, 1], [0, 1, 0]],
   'Identity': [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+};
+
+const BAYES_DATA = {
+  priors: { yes: 9/14, no: 5/14 },
+  counts: {
+    BP: { High: { yes: 2, no: 3 }, Normal: { yes: 3, no: 2 }, Low: { yes: 4, no: 0 } },
+    Fever: { High: { yes: 2, no: 2 }, Mild: { yes: 4, no: 2 }, No: { yes: 3, no: 1 } },
+    Diabetes: { Yes: { yes: 3, no: 4 }, No: { yes: 6, no: 1 } },
+    Vomit: { Yes: { yes: 3, no: 3 }, No: { yes: 6, no: 2 } }
+  },
+  m_values: { BP: 3, Fever: 3, Diabetes: 2, Vomit: 2 }
 };
 
 // --- Common UI Components ---
@@ -81,6 +96,245 @@ const SeniorAdvice = ({ content }) => {
 };
 
 // --- Sub-Modules ---
+
+// NEW: Bayes Basics Module (Formula & Fire Case)
+const BayesBasicsModule = () => {
+  const [pFire, setPFire] = useState(0.01);
+  const [pSmokeGivenFire, setPSmokeGivenFire] = useState(0.9);
+  const [pSmoke, setPSmoke] = useState(0.1);
+  const { t } = useTranslation();
+
+  const pFireGivenSmoke = useMemo(() => {
+    return (pFire * pSmokeGivenFire) / pSmoke;
+  }, [pFire, pSmokeGivenFire, pSmoke]);
+
+  return (
+    <div className="space-y-10">
+      {/* Formula Parsing Section */}
+      <section>
+        <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <Calculator size={18} className="text-blue-500" />
+          {t('bayes.basics.title')}
+        </h3>
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+          <div className="flex flex-col items-center justify-center py-4 bg-white rounded-xl border border-slate-100 shadow-inner mb-6">
+            <Latex displayMode formula="P(B|E) = P(B) \times \frac{P(E|B)}{P(E)}" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 bg-blue-50 border border-blue-100 rounded-xl">
+              <p className="text-xs font-bold text-blue-600 mb-1 uppercase tracking-wider">{t('bayes.basics.terms.posterior')}</p>
+              <p className="text-sm text-slate-700">
+                <Trans i18nKey="bayes.basics.terms.posterior_desc">
+                  Update of belief <Latex formula="B" /> after evidence <Latex formula="E" />.
+                </Trans>
+              </p>
+            </div>
+            <div className="p-4 bg-green-50 border border-green-100 rounded-xl">
+              <p className="text-xs font-bold text-green-600 mb-1 uppercase tracking-wider">{t('bayes.basics.terms.prior')}</p>
+              <p className="text-sm text-slate-700">
+                <Trans i18nKey="bayes.basics.terms.prior_desc">
+                  Probability of belief <Latex formula="B" /> before any evidence.
+                </Trans>
+              </p>
+            </div>
+            <div className="p-4 bg-purple-50 border border-purple-100 rounded-xl">
+              <p className="text-xs font-bold text-purple-600 mb-1 uppercase tracking-wider">{t('bayes.basics.terms.likelihood')}</p>
+              <p className="text-sm text-slate-700">
+                <Trans i18nKey="bayes.basics.terms.likelihood_desc">
+                  Probability of evidence <Latex formula="E" /> given belief <Latex formula="B" /> is true.
+                </Trans>
+              </p>
+            </div>
+            <div className="p-4 bg-orange-50 border border-orange-100 rounded-xl">
+              <p className="text-xs font-bold text-orange-600 mb-1 uppercase tracking-wider">{t('bayes.basics.terms.marginal')}</p>
+              <p className="text-sm text-slate-700">
+                <Trans i18nKey="bayes.basics.terms.marginal_desc">
+                  Total probability of evidence <Latex formula="E" /> under all conditions.
+                </Trans>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Fire Case Section */}
+      <section>
+        <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <Flame size={18} className="text-red-500" />
+          {t('bayes.fire_case.title')}
+        </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-slate-700"><Trans i18nKey="bayes.fire_case.p_fire">Prob <Latex formula="P(\text{Fire})" /></Trans></span>
+                <input 
+                  type="range" min="0.001" max="0.2" step="0.001" value={pFire} 
+                  onChange={(e) => setPFire(parseFloat(e.target.value))}
+                  className="w-32 accent-red-500"
+                />
+                <span className="font-mono text-xs font-bold text-red-600">{(pFire*100).toFixed(1)}%</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-slate-700"><Trans i18nKey="bayes.fire_case.p_smoke">Prob <Latex formula="P(\text{Smoke})" /></Trans></span>
+                <input 
+                  type="range" min="0.01" max="0.5" step="0.01" value={pSmoke} 
+                  onChange={(e) => setPSmoke(parseFloat(e.target.value))}
+                  className="w-32 accent-slate-500"
+                />
+                <span className="font-mono text-xs font-bold text-slate-600">{(pSmoke*100).toFixed(1)}%</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-slate-700"><Trans i18nKey="bayes.fire_case.p_smoke_given_fire">Prob <Latex formula="P(\text{Smoke}|\text{Fire})" /></Trans></span>
+                <input 
+                  type="range" min="0.5" max="1" step="0.01" value={pSmokeGivenFire} 
+                  onChange={(e) => setPSmokeGivenFire(parseFloat(e.target.value))}
+                  className="w-32 accent-purple-500"
+                />
+                <span className="font-mono text-xs font-bold text-purple-600">{(pSmokeGivenFire*100).toFixed(1)}%</span>
+              </div>
+            </div>
+
+            <SeniorAdvice content={<Trans i18nKey="bayes.fire_case.advice">
+              讲义中的经典案例... <Latex formula="9\%" />... <b>Evidence ≠ Conclusion...</b>
+            </Trans>} />
+          </div>
+
+          <div className="flex flex-col justify-center items-center bg-slate-900 rounded-3xl p-8 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-10"><Wind size={100} /></div>
+            <div className="text-center z-10">
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">{t('bayes.fire_case.result_title')}</p>
+              <p className="text-5xl font-black text-red-400 mb-2">{(pFireGivenSmoke * 100).toFixed(2)}%</p>
+              <div className="mt-6 p-4 bg-slate-800 rounded-xl border border-slate-700 text-xs font-mono leading-relaxed">
+                <p className="mb-2 text-slate-400">{t('bayes.fire_case.calc_process')}</p>
+                <Latex formula={`P(F|S) = \\frac{${pFire} \\times ${pSmokeGivenFire}}{${pSmoke}}`} />
+                <p className="mt-2 text-red-300">= {pFireGivenSmoke.toFixed(4)}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// D: Naive Bayes Module (Disease Z Case)
+const NaiveBayesModule = () => {
+  const [inputs, setInputs] = useState({ BP: 'High', Fever: 'No', Diabetes: 'Yes', Vomit: 'Yes' });
+  const [alpha, setAlpha] = useState(0);
+  const [useLog, setUseLog] = useState(false);
+  const { t } = useTranslation();
+
+  const calculate = () => {
+    const results = { yes: { score: 0, raw: 1, steps: [] }, no: { score: 0, raw: 1, steps: [] } };
+    ['yes', 'no'].forEach(cls => {
+      const prior = BAYES_DATA.priors[cls];
+      results[cls].steps.push({ name: 'Prior', val: prior, label: cls === 'yes' ? 'P(Z=Yes)' : 'P(Z=No)' });
+      let likelihoodProduct = 1;
+      let logSum = Math.log(prior);
+      Object.entries(inputs).forEach(([feat, val]) => {
+        const count = BAYES_DATA.counts[feat][val][cls];
+        const totalCls = cls === 'yes' ? 9 : 5;
+        const m = BAYES_DATA.m_values[feat];
+        const prob = (count + alpha) / (totalCls + m * alpha);
+        results[cls].steps.push({ 
+          name: feat, val: prob, label: `P(${feat}|${cls})`,
+          formula: `\\frac{${count} + ${alpha}}{${totalCls} + ${m} \\times ${alpha}}`
+        });
+        likelihoodProduct *= prob;
+        logSum += Math.log(prob || 1e-10);
+      });
+      results[cls].raw = prior * likelihoodProduct;
+      results[cls].score = useLog ? logSum : results[cls].raw;
+    });
+    const totalRaw = results.yes.raw + results.no.raw;
+    results.yes.prob = totalRaw > 0 ? results.yes.raw / totalRaw : 0;
+    results.no.prob = totalRaw > 0 ? results.no.raw / totalRaw : 0;
+    return results;
+  };
+
+  const results = useMemo(calculate, [inputs, alpha, useLog]);
+
+  return (
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">{t('bayes.naive.input_title')}</h4>
+          <div className="space-y-4">
+            {Object.keys(inputs).map(feat => (
+              <div key={feat}>
+                <label className="text-[10px] font-black text-slate-400 uppercase block mb-1">{feat}</label>
+                <select 
+                  value={inputs[feat]} 
+                  onChange={(e) => setInputs({...inputs, [feat]: e.target.value})}
+                  className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold outline-none"
+                >
+                  {Object.keys(BAYES_DATA.counts[feat]).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+              </div>
+            ))}
+            <div className="pt-4 border-t space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-slate-500 uppercase"><Trans i18nKey="bayes.naive.smoothing">Smoothing <Latex formula="\alpha" />:</Trans></span>
+                <input 
+                  type="number" step="0.1" min="0" max="2" value={alpha} 
+                  onChange={(e) => setAlpha(parseFloat(e.target.value) || 0)}
+                  className="w-16 p-1 border rounded text-center text-xs font-mono"
+                />
+              </div>
+              <button 
+                onClick={() => setUseLog(!useLog)}
+                className={`w-full py-2 rounded-lg text-[10px] font-black transition-all ${useLog ? 'bg-indigo-600 text-white shadow-lg' : 'bg-slate-100 text-slate-600'}`}
+              >
+                {useLog ? t('bayes.naive.log_mode') : t('bayes.naive.product_mode')}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-slate-900 rounded-2xl p-6 text-white relative overflow-hidden">
+            <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-6">{t('bayes.naive.result_title')}</h4>
+            <div className="space-y-6 relative z-10">
+              {['yes', 'no'].map(cls => (
+                <div key={cls}>
+                  <div className="flex justify-between items-end mb-2">
+                    <span className="text-xs font-bold uppercase">Class: {cls}</span>
+                    <span className="text-xl font-mono text-blue-400">{(results[cls].prob * 100).toFixed(2)}%</span>
+                  </div>
+                  <div className="h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} animate={{ width: `${results[cls].prob * 100}%` }} className={`h-full ${cls === 'yes' ? 'bg-blue-500' : 'bg-slate-500'}`} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2 text-sm uppercase">{t('bayes.naive.likelihood_chain')}</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[10px]">
+              {['yes', 'no'].map(cls => (
+                <div key={cls} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                  <p className="font-bold text-slate-400 mb-2 uppercase tracking-tighter">{t('bayes.naive.prob_for', {cls})}</p>
+                  <div className="space-y-2">
+                    {results[cls].steps.map((s, i) => (
+                      <div key={i} className="flex justify-between items-center">
+                        <span className="text-slate-500 font-mono"><Latex formula={s.label} /></span>
+                        <span className="font-mono font-bold text-slate-800">{s.val.toFixed(3)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <SeniorAdvice content={<Trans i18nKey="bayes.naive.advice">
+        讲义第 23 页重点... <Latex formula="\alpha" /> ...
+      </Trans>} />
+    </div>
+  );
+};
 
 // A: NumPy Mechanism
 const NumpyModule = () => {
@@ -435,7 +689,9 @@ export default function App() {
   const tabs = [
     { id: 'numpy', label: t('app.tabs.numpy'), icon: Cpu, subtitle: 'View vs Copy & Broadcasting' },
     { id: 'backprop', label: t('app.tabs.backprop'), icon: Layers, subtitle: 'The Chain Rule Visualized' },
-    { id: 'kernel', label: t('app.tabs.kernel'), icon: Grid3X3, subtitle: 'Edge Detection Simulation' }
+    { id: 'kernel', label: t('app.tabs.kernel'), icon: Grid3X3, subtitle: 'Edge Detection Simulation' },
+    { id: 'bayesBasics', label: t('app.tabs.bayesBasics'), icon: Calculator, subtitle: 'Formula & Fire Alarm Case' },
+    { id: 'naiveBayes', label: t('app.tabs.naiveBayes'), icon: BarChart3, subtitle: 'Inference & Smoothing' }
   ];
 
   const toggleLanguage = () => {
@@ -554,6 +810,26 @@ export default function App() {
                     subtitle={t('app.section.kernel.subtitle')} 
                   />
                   <KernelModule />
+                </>
+              )}
+              {activeTab === 'bayesBasics' && (
+                <>
+                  <SectionTitle 
+                    icon={Calculator} 
+                    title={t('app.section.bayesBasics.title')} 
+                    subtitle={t('app.section.bayesBasics.subtitle')} 
+                  />
+                  <BayesBasicsModule />
+                </>
+              )}
+              {activeTab === 'naiveBayes' && (
+                <>
+                  <SectionTitle 
+                    icon={BarChart3} 
+                    title={t('app.section.naiveBayes.title')} 
+                    subtitle={t('app.section.naiveBayes.subtitle')} 
+                  />
+                  <NaiveBayesModule />
                 </>
               )}
             </motion.div>
