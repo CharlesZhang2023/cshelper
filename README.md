@@ -21,6 +21,14 @@ Currently, the content of this project mainly references the study notes from [m
 - The COMP2211 part of this project will be merged into [moyunxiang/COMP2211](https://github.com/moyunxiang/COMP2211/blob/main/COMP2211.md) as its interactive supplement.
 - The COMP2211 part will be open-sourced under the MIT license for students to learn and reference.
 
+## 🧩 Visualization Modules
+
+### Kernel Laboratory (Convolution)
+Interactive simulation of how convolution kernels (filters) extract features from images.
+- **Visualized Process**: Real-time demonstration of the $(I * K)_{x,y}$ operation, showing the Input Image ($I$), Kernel ($K$), and Output Feature Map side-by-side.
+- **Interactive Kernels**: Experiment with preset kernels like **Sobel-X/Y** (edge detection), **Laplacian** (second derivative/sudden changes), and **Identity**, or define custom kernels.
+- **Educational Insight**: Understand how kernels act as local feature filters to capture spatial patterns.
+
 ## 🛠️ Tech Stack
 
 This project is built on a modern frontend tech stack, focusing on performance and interactive experience:

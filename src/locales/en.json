@@ -40,6 +40,32 @@
       "numpy": "NumPy Mechanism",
       "backprop": "Backpropagation",
       "kernel": "Kernel Lab"
+    },
+    "section": {
+      "numpy": {
+        "title": "NumPy Internal Mechanism",
+        "subtitle": "Deep Dive into Memory Address Mapping & Broadcasting Logic"
+      },
+      "backprop": {
+        "title": "Backpropagation & Gradient Update",
+        "subtitle": "Chain Rule is the Bridge between Error and Weights"
+      },
+      "kernel": {
+        "title": "Kernel Laboratory",
+        "subtitle": "Real-time Simulation of Edge Feature Extraction"
+      }
+    },
+    "sidebar": {
+      "knowledge_core": "Knowledge Core",
+      "exam_tip": {
+        "title": "Exam Tip",
+        "content": "Exam Note: <1>Broadcasting</1> can only extend dimensions of Size 1. <3>A \\cdot B</3> (np.dot) and <5>A \\odot B</5> (Element-wise) have completely different physical meanings!"
+      }
+    },
+    "footer": {
+      "copyright": "© 2024 COMP2211 ML Learning Lab. Education through interaction.",
+      "latency": "Latency: 12ms",
+      "render": "Render: KaTeX High-Def"
     }
   }
 }

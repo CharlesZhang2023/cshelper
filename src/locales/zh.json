@@ -43,6 +43,32 @@
       "numpy": "NumPy 机制",
       "backprop": "反向传播",
       "kernel": "卷积核实验室"
+    },
+    "section": {
+      "numpy": {
+        "title": "NumPy 内部机制",
+        "subtitle": "深入内存地址映射与广播逻辑"
+      },
+      "backprop": {
+        "title": "反向传播与梯度更新",
+        "subtitle": "链式法则是连接误差与权重的桥梁"
+      },
+      "kernel": {
+        "title": "卷积核实验室",
+        "subtitle": "实时模拟空间滤波器如何提取边缘特征"
+      }
+    },
+    "sidebar": {
+      "knowledge_core": "Knowledge Core",
+      "exam_tip": {
+        "title": "Exam Tip",
+        "content": "考试注意：<1>Broadcasting</1> 只能扩展 Size 为 1 的维度。<3>A \\cdot B</3> (np.dot) 和 <5>A \\odot B</5> (Element-wise) 物理含义完全不同！"
+      }
+    },
+    "footer": {
+      "copyright": "© 2024 COMP2211 ML Learning Lab. Education through interaction.",
+      "latency": "Latency: 12ms",
+      "render": "Render: KaTeX High-Def"
     }
   }
 }

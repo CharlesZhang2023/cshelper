@@ -10,13 +10,11 @@ import {
   Play,
   RefreshCw,
   Search,
-  Activity,
-  Languages
+  Activity
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import { useTranslation, Trans } from 'react-i18next';
 
 // --- KaTeX Helper Component ---
 // KaTeX 进行latex渲染能力
@@ -61,31 +59,27 @@ const SectionTitle = ({ icon: Icon, title, subtitle }) => (
   </div>
 );
 
-const SeniorAdvice = ({ content }) => {
-  const { t } = useTranslation();
-  return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mt-4 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg"
-    >
-      <div className="flex gap-2">
-        <Zap className="text-amber-500 shrink-0" size={18} />
-        <div>
-          <span className="font-bold text-amber-800 text-sm">{t('senior_advice')}</span>
-          <div className="text-amber-900 text-sm leading-relaxed inline">{content}</div>
-        </div>
+const SeniorAdvice = ({ content }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="mt-4 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg"
+  >
+    <div className="flex gap-2">
+      <Zap className="text-amber-500 shrink-0" size={18} />
+      <div>
+        <span className="font-bold text-amber-800 text-sm">学长寄语：</span>
+        <div className="text-amber-900 text-sm leading-relaxed inline">{content}</div>
       </div>
-    </motion.div>
-  );
-};
+    </div>
+  </motion.div>
+);
 
 // --- Sub-Modules ---
 
 // A: NumPy Mechanism
 const NumpyModule = () => {
   const [sliceType, setSliceType] = useState('none');
-  const { t } = useTranslation();
 
   const getHighlight = (r, c, val) => {
     if (sliceType === 'slice') return r === 1; 
@@ -96,9 +90,9 @@ const NumpyModule = () => {
 
   const getInfo = () => {
     switch(sliceType) {
-      case 'slice': return { label: t('numpy_module.view_label'), color: "bg-green-500", desc: t('numpy_module.view_desc') };
-      case 'fancy': return { label: t('numpy_module.fancy_label'), color: "bg-blue-500", desc: t('numpy_module.fancy_desc') };
-      case 'mask': return { label: t('numpy_module.mask_label'), color: "bg-purple-500", desc: t('numpy_module.mask_desc') };
+      case 'slice': return { label: "View (Reference)", color: "bg-green-500", desc: "Basic Slicing 总是返回视图。修改它会直接改变原矩阵内存！" };
+      case 'fancy': return { label: "Copy (New Memory)", color: "bg-blue-500", desc: "Fancy Indexing 创建的是副本。这涉及到内存分配，大规模使用时效率较低。" };
+      case 'mask': return { label: "Copy (New Memory)", color: "bg-purple-500", desc: "Boolean Mask 同样会触发内存复制。它是提取特定条件数据的神器。" };
       default: return null;
     }
   };
@@ -110,7 +104,7 @@ const NumpyModule = () => {
       <div>
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Grid3X3 size={18} className="text-blue-500" />
-          {t('numpy_module.title')}
+          1. 内存切片可视化 (4x4 Matrix)
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-4">
@@ -132,9 +126,9 @@ const NumpyModule = () => {
               )}
             </div>
             <div className="flex flex-wrap gap-2">
-              <button onClick={() => setSliceType('slice')} className={`px-4 py-2 rounded-lg text-xs font-mono transition shadow-sm ${sliceType === 'slice' ? 'bg-green-600 text-white' : 'bg-white border border-gray-200'}`}>{t('numpy_module.slice_btn')}</button>
-              <button onClick={() => setSliceType('fancy')} className={`px-4 py-2 rounded-lg text-xs font-mono transition shadow-sm ${sliceType === 'fancy' ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200'}`}>{t('numpy_module.fancy_btn')}</button>
-              <button onClick={() => setSliceType('mask')} className={`px-4 py-2 rounded-lg text-xs font-mono transition shadow-sm ${sliceType === 'mask' ? 'bg-purple-600 text-white' : 'bg-white border border-gray-200'}`}>{t('numpy_module.mask_btn')}</button>
+              <button onClick={() => setSliceType('slice')} className={`px-4 py-2 rounded-lg text-xs font-mono transition shadow-sm ${sliceType === 'slice' ? 'bg-green-600 text-white' : 'bg-white border border-gray-200'}`}>a[1:2, :]</button>
+              <button onClick={() => setSliceType('fancy')} className={`px-4 py-2 rounded-lg text-xs font-mono transition shadow-sm ${sliceType === 'fancy' ? 'bg-blue-600 text-white' : 'bg-white border border-gray-200'}`}>a[[0, 2]]</button>
+              <button onClick={() => setSliceType('mask')} className={`px-4 py-2 rounded-lg text-xs font-mono transition shadow-sm ${sliceType === 'mask' ? 'bg-purple-600 text-white' : 'bg-white border border-gray-200'}`}>a[a % 2 == 0]</button>
             </div>
           </div>
           
@@ -147,7 +141,7 @@ const NumpyModule = () => {
                 <p className="text-sm text-gray-600 leading-relaxed">{info.desc}</p>
               </motion.div>
             ) : (
-              <p className="text-sm text-gray-400 italic">{t('numpy_module.instruction')}</p>
+              <p className="text-sm text-gray-400 italic">选择一种切片方式观察 NumPy 的内存行为...</p>
             )}
           </div>
         </div>
@@ -156,7 +150,7 @@ const NumpyModule = () => {
       <div className="border-t pt-8">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <ArrowRightLeft size={18} className="text-blue-500" />
-          {t('numpy_module.broadcast_title')}
+          2. 广播机制 (Broadcasting)
         </h3>
         <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
           <div className="flex flex-col md:flex-row items-center justify-center gap-12">
@@ -199,11 +193,7 @@ const NumpyModule = () => {
                </div>
             </div>
           </div>
-          <SeniorAdvice content={
-            <Trans i18nKey="numpy_module.broadcast_advice">
-              Broadcasting isn't actually copying data in memory... <Latex formula="1" />.
-            </Trans>
-          } />
+          <SeniorAdvice content={<>广播不是真的把数据在内存里复制，而是在遍历迭代器时虚拟地映射地址。核心准则：从最后一位往前对，要么相等，要么其中一个是 <Latex formula="1" />。</>} />
         </div>
       </div>
     </div>
@@ -214,7 +204,6 @@ const NumpyModule = () => {
 const BackpropModule = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [errorVal, setErrorVal] = useState(0.8);
-  const { t } = useTranslation();
 
   const startTracking = () => {
     setIsAnimating(true);
@@ -226,7 +215,7 @@ const BackpropModule = () => {
       <div className="space-y-6">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           <Activity size={18} className="text-red-500" />
-          {t('backprop_module.title')}
+          链式法则追踪器
         </h3>
         <div className="relative h-64 bg-slate-900 rounded-2xl overflow-hidden p-8 flex items-center justify-between">
           <div className="z-10 flex flex-col gap-12">
@@ -255,7 +244,7 @@ const BackpropModule = () => {
           </div>
 
           <div className="absolute top-4 right-4 text-right">
-            <p className="text-[10px] text-slate-500 font-mono uppercase tracking-widest">{t('backprop_module.output_layer')}</p>
+            <p className="text-[10px] text-slate-500 font-mono uppercase tracking-widest">Output Layer</p>
             <p className="text-xs text-red-400 font-bold flex items-center gap-1 justify-end">
               Error <Latex formula="\delta_k" />
             </p>
@@ -264,7 +253,7 @@ const BackpropModule = () => {
 
         <div className="bg-white border rounded-xl p-4 space-y-4 shadow-sm">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium text-gray-700">{t('backprop_module.error_val')} <Latex formula="(Target - Out)" />:</label>
+            <label className="text-sm font-medium text-gray-700">误差值 <Latex formula="(Target - Out)" />:</label>
             <input 
               type="range" min="0" max="2" step="0.1" value={errorVal} 
               onChange={(e) => setErrorVal(e.target.value)}
@@ -277,7 +266,7 @@ const BackpropModule = () => {
             disabled={isAnimating}
             className="w-full py-3 bg-red-600 text-white rounded-lg flex items-center justify-center gap-2 font-bold hover:bg-red-700 transition disabled:opacity-50 shadow-md"
           >
-            <Play size={16} fill="currentColor" /> {isAnimating ? t('backprop_module.calculating') : t('backprop_module.track_grad')}
+            <Play size={16} fill="currentColor" /> {isAnimating ? "正在推导梯度..." : "追踪梯度 Δwjk"}
           </button>
         </div>
       </div>
@@ -285,31 +274,23 @@ const BackpropModule = () => {
       <div className="bg-white border border-slate-200 rounded-2xl p-6 flex flex-col shadow-sm">
         <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2 italic border-b pb-2">
           <Search size={16} className="text-blue-500" />
-          {t('backprop_module.notebook_title')}
+          推导笔记本 (COMP2211 Core)
         </h4>
         <div className="flex-1 space-y-4 overflow-y-auto">
           <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-            <p className="font-bold text-xs text-slate-400 uppercase mb-2">{t('backprop_module.step1_title')}</p>
+            <p className="font-bold text-xs text-slate-400 uppercase mb-2">Step 1: 链式法则展开</p>
             <Latex displayMode formula="\frac{\partial E}{\partial w_{jk}} = \frac{\partial E}{\partial O_k} \cdot \frac{\partial O_k}{\partial net_k} \cdot \frac{\partial net_k}{\partial w_{jk}}" />
           </div>
           <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-            <p className="font-bold text-xs text-slate-400 uppercase mb-2">{t('backprop_module.step2_title')}</p>
-            <p className="text-xs text-gray-600 mb-2">
-              <Trans i18nKey="backprop_module.step2_desc">
-                Let <Latex formula="\delta_k = - \frac{\partial E}{\partial net_k}" />. Under MSE loss:
-              </Trans>
-            </p>
+            <p className="font-bold text-xs text-slate-400 uppercase mb-2">Step 2: 定义误差项 (Error Signal)</p>
+            <p className="text-xs text-gray-600 mb-2">令 <Latex formula="\delta_k = - \frac{\partial E}{\partial net_k}" />。在 MSE 损失下：</p>
             <Latex displayMode formula="\delta_k = (T_k - O_k) \cdot f'(net_k)" className="text-red-700" />
           </div>
           <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-            <p className="font-bold text-xs text-slate-400 uppercase mb-2">{t('backprop_module.step3_title')}</p>
+            <p className="font-bold text-xs text-slate-400 uppercase mb-2">Step 3: 权重更新量</p>
             <Latex displayMode formula="\Delta w_{jk} = \eta \cdot \delta_k \cdot O_j" className="text-green-700" />
           </div>
-          <SeniorAdvice content={
-            <Trans i18nKey="backprop_module.advice">
-              Remember, backpropagation... <Latex formula="w_{jk}" /> ... <Latex formula="E" /> ... <Latex formula="\delta_k" /> ...
-            </Trans>
-          } />
+          <SeniorAdvice content={<>记住，反向传播本质上是『寻找罪魁祸首』的过程。每一层权重 <Latex formula="w_{jk}" /> 都在问：误差 <Latex formula="E" /> 有多少是由我负责的？<Latex formula="\delta_k" /> 就是上一层传回来的『责备信』。</>} />
         </div>
       </div>
     </div>
@@ -320,7 +301,6 @@ const BackpropModule = () => {
 const KernelModule = () => {
   const [kernel, setKernel] = useState(KERNEL_PRESETS['Sobel-X']);
   const [activePreset, setActivePreset] = useState('Sobel-X');
-  const { t } = useTranslation();
 
   const sourceImage = useMemo(() => {
     const img = Array.from({ length: 8 }, () => Array(8).fill(0));
@@ -368,13 +348,13 @@ const KernelModule = () => {
           ))}
         </div>
         <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-           {t('kernel_module.operation')} <Latex formula="(I * K)_{x,y}" />
+           Operation: <Latex formula="(I * K)_{x,y}" />
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="flex flex-col items-center">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">{t('kernel_module.input_image')} <Latex formula="I" /></span>
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Input Image <Latex formula="I" /></span>
           <div className="grid grid-cols-8 gap-px bg-slate-300 p-px border-2 border-slate-200 rounded shadow-sm">
             {sourceImage.map((row, ri) => 
               row.map((val, ci) => (
@@ -386,7 +366,7 @@ const KernelModule = () => {
 
         <div className="flex flex-col items-center justify-center relative">
           <div className="text-3xl font-bold text-slate-200 absolute -left-6 top-1/2 -translate-y-1/2 hidden lg:block">×</div>
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">{t('kernel_module.kernel')} <Latex formula="K" /></span>
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Kernel <Latex formula="K" /></span>
           <div className="grid grid-cols-3 gap-2 bg-indigo-50 p-4 rounded-xl border-2 border-indigo-100 shadow-inner">
             {kernel.map((row, ri) => 
               row.map((val, ci) => (
@@ -404,7 +384,7 @@ const KernelModule = () => {
 
         <div className="flex flex-col items-center relative">
           <div className="text-3xl font-bold text-slate-200 absolute -left-6 top-1/2 -translate-y-1/2 hidden lg:block">=</div>
-          <span className="text-xs font-bold uppercase tracking-wider text-green-600 mb-4">{t('kernel_module.output_feature_map')}</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-green-600 mb-4">Output Feature Map</span>
           <div className="grid grid-cols-6 gap-px bg-slate-300 p-px border-2 border-slate-200 rounded shadow-sm">
             {Array.from({ length: 6 }).map((_, ri) => 
               Array.from({ length: 6 }).map((_, ci) => {
@@ -417,11 +397,7 @@ const KernelModule = () => {
           </div>
         </div>
       </div>
-      <SeniorAdvice content={
-        <Trans i18nKey="kernel_module.advice">
-          A convolution kernel... <Latex formula="\text{Laplacian}" /> ...
-        </Trans>
-      } />
+      <SeniorAdvice content={<>卷积核本质上是一个局部特征过滤器。当你使用 <Latex formula="\text{Laplacian}" /> 算子时，它在做二阶导数近似，能迅速捕捉到像素亮度的『突变点』。</>} />
     </div>
   );
 };
@@ -430,18 +406,12 @@ const KernelModule = () => {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('numpy');
-  const { t, i18n } = useTranslation();
 
   const tabs = [
-    { id: 'numpy', label: t('app.tabs.numpy'), icon: Cpu, subtitle: 'View vs Copy & Broadcasting' },
-    { id: 'backprop', label: t('app.tabs.backprop'), icon: Layers, subtitle: 'The Chain Rule Visualized' },
-    { id: 'kernel', label: t('app.tabs.kernel'), icon: Grid3X3, subtitle: 'Edge Detection Simulation' }
+    { id: 'numpy', label: 'NumPy 机制', icon: Cpu, subtitle: 'View vs Copy & Broadcasting' },
+    { id: 'backprop', label: '反向传播', icon: Layers, subtitle: 'The Chain Rule Visualized' },
+    { id: 'kernel', label: '卷积核实验室', icon: Grid3X3, subtitle: 'Edge Detection Simulation' }
   ];
-
-  const toggleLanguage = () => {
-    const newLang = i18n.language.startsWith('zh') ? 'en' : 'zh';
-    i18n.changeLanguage(newLang);
-  };
 
   return (
     <div className="min-h-screen bg-[#f1f5f9] text-slate-900 font-sans p-4 md:p-8">
@@ -449,26 +419,16 @@ export default function App() {
       <header className="max-w-6xl mx-auto mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tight">
-            {t('app.title')}
+            CS/AI <span className="text-blue-600">交互式学习实验室</span>
           </h1>
           <div className="flex items-center gap-3 mt-2">
-            <p className="text-slate-500 font-medium">{t('app.subtitle')}</p>
-            <span className="px-2 py-0.5 bg-indigo-100 text-indigo-600 text-[10px] rounded-full uppercase font-black">{t('app.version')}</span>
+            <p className="text-slate-500 font-medium">COMP2211 Machine Learning Notebook</p>
+            <span className="px-2 py-0.5 bg-indigo-100 text-indigo-600 text-[10px] rounded-full uppercase font-black">v2.0 Katex Enhanced</span>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="px-4 py-2 bg-white border border-slate-200 rounded-full shadow-sm flex items-center gap-3 text-xs font-mono text-slate-500 hidden sm:flex">
-            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
-            Environment: Ready / KaTeX Engine Active
-          </div>
-          <button 
-            onClick={toggleLanguage}
-            className="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition flex items-center gap-2 px-4 font-bold text-slate-600"
-            title="Switch Language"
-          >
-            <Languages size={20} className="text-blue-600" />
-            {i18n.language.startsWith('zh') ? 'English' : '中文'}
-          </button>
+        <div className="px-4 py-2 bg-white border border-slate-200 rounded-full shadow-sm flex items-center gap-3 text-xs font-mono text-slate-500">
+          <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+          Environment: Ready / KaTeX Engine Active
         </div>
       </header>
 
@@ -476,7 +436,7 @@ export default function App() {
       <main className="max-w-6xl mx-auto bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden flex flex-col md:flex-row min-h-[700px]">
         {/* Sidebar Nav */}
         <nav className="w-full md:w-72 bg-slate-50 border-r border-slate-200 p-8 space-y-3">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 px-2">{t('app.sidebar.knowledge_core')}</p>
+          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 px-2">Knowledge Core</p>
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -503,13 +463,11 @@ export default function App() {
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-3">
                 <Info size={16} />
-                <span className="text-xs font-bold uppercase tracking-wider">{t('app.sidebar.exam_tip.title')}</span>
+                <span className="text-xs font-bold uppercase tracking-wider">Exam Tip</span>
               </div>
               <p className="text-[11px] leading-relaxed opacity-90 font-medium">
-                <Trans i18nKey="app.sidebar.exam_tip.content">
-                  考试注意：<Latex formula="\text{Broadcasting}" /> 只能扩展 Size 为 1 的维度。
-                  <Latex formula="\mathbf{A} \cdot \mathbf{B}" /> (np.dot) 和 <Latex formula="\mathbf{A} \odot \mathbf{B}" /> (Element-wise) 物理含义完全不同！
-                </Trans>
+                考试注意：<Latex formula="\text{Broadcasting}" /> 只能扩展 Size 为 1 的维度。
+                <Latex formula="\mathbf{A} \cdot \mathbf{B}" /> (np.dot) 和 <Latex formula="\mathbf{A} \odot \mathbf{B}" /> (Element-wise) 物理含义完全不同！
               </p>
             </div>
           </div>
@@ -530,8 +488,8 @@ export default function App() {
                 <>
                   <SectionTitle 
                     icon={Cpu} 
-                    title={t('app.section.numpy.title')} 
-                    subtitle={t('app.section.numpy.subtitle')} 
+                    title="NumPy 内部机制" 
+                    subtitle="深入内存地址映射与广播逻辑" 
                   />
                   <NumpyModule />
                 </>
@@ -540,8 +498,8 @@ export default function App() {
                 <>
                   <SectionTitle 
                     icon={Layers} 
-                    title={t('app.section.backprop.title')} 
-                    subtitle={t('app.section.backprop.subtitle')} 
+                    title="反向传播与梯度更新" 
+                    subtitle="链式法则是连接误差与权重的桥梁" 
                   />
                   <BackpropModule />
                 </>
@@ -550,8 +508,8 @@ export default function App() {
                 <>
                   <SectionTitle 
                     icon={Grid3X3} 
-                    title={t('app.section.kernel.title')} 
-                    subtitle={t('app.section.kernel.subtitle')} 
+                    title="卷积核实验室" 
+                    subtitle="实时模拟空间滤波器如何提取边缘特征" 
                   />
                   <KernelModule />
                 </>
@@ -563,10 +521,10 @@ export default function App() {
 
       {/* Footer Branding */}
       <footer className="max-w-6xl mx-auto mt-12 pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-400 text-xs font-medium uppercase tracking-widest">
-        <p>{t('app.footer.copyright')}</p>
+        <p>© 2024 COMP2211 ML Learning Lab. Education through interaction.</p>
         <div className="flex gap-8">
-          <span className="flex items-center gap-2 hover:text-blue-500 cursor-default transition"><RefreshCw size={14} /> {t('app.footer.latency')}</span>
-          <span className="flex items-center gap-2 hover:text-blue-500 cursor-default transition"><Cpu size={14} /> {t('app.footer.render')}</span>
+          <span className="flex items-center gap-2 hover:text-blue-500 cursor-default transition"><RefreshCw size={14} /> Latency: 12ms</span>
+          <span className="flex items-center gap-2 hover:text-blue-500 cursor-default transition"><Cpu size={14} /> Render: KaTeX High-Def</span>
         </div>
       </footer>
     </div>
